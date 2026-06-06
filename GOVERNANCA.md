@@ -1,0 +1,4 @@
+- Não enviar documentos sigilosos.
+- Não enviar dados de investigados.
+- Não enviar PDFs de quebras de sigilo.
+- Compartilhar apenas scripts, modelos e automações.
