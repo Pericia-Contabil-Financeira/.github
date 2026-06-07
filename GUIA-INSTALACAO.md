@@ -22,13 +22,69 @@ Download:
 
 https://git-scm.com/download/win
 
+## Opções recomendadas durante a instalação
+
+### Editor padrão
+
+Selecionar:
+
+```text
+Use Notepad as Git's default editor
+```
+
+### Nome padrão da branch principal
+
+Selecionar:
+
+```text
+Override the default branch name for new repositories
+```
+
+Informar:
+
+```text
+main
+```
+
+### PATH
+
+Selecionar:
+
+```text
+Git from the command line and also from 3rd-party software
+```
+
+### SSH
+
+Selecionar:
+
+```text
+Use bundled OpenSSH
+```
+
+### HTTPS
+
+Selecionar:
+
+```text
+Use the OpenSSL library
+```
+
+### Line Endings
+
+Selecionar a opção padrão:
+
+```text
+Checkout Windows-style, commit Unix-style line endings
+```
+
 Após a instalação, abrir o PowerShell e verificar:
 
 ```powershell
 git --version
 ```
 
-Exemplo de retorno:
+Exemplo:
 
 ```text
 git version 2.54.0.windows.1
@@ -42,16 +98,36 @@ Download:
 
 https://www.docker.com/products/docker-desktop/
 
+## Opções recomendadas
+
+Utilizar:
+
+```text
+WSL2
+```
+
+e
+
+```text
+Linux Containers
+```
+
 Após a instalação:
 
 * Reiniciar o computador;
 * Abrir o Docker Desktop;
-* Aguardar o Docker iniciar.
+* Aguardar o Docker iniciar completamente.
 
 Verificar:
 
 ```powershell
 docker --version
+```
+
+Exemplo:
+
+```text
+Docker version 28.x.x
 ```
 
 ---
@@ -64,6 +140,12 @@ https://positron.posit.co/
 
 Instalar normalmente.
 
+Na primeira execução, recomenda-se instalar a extensão:
+
+```text
+Dev Containers
+```
+
 ---
 
 # 5. Configurar Git
@@ -73,6 +155,12 @@ Executar:
 ```powershell
 git config --global user.name "Seu Nome"
 git config --global user.email "seu_email@dominio"
+```
+
+Verificar:
+
+```powershell
+git config --global --list
 ```
 
 ---
@@ -93,15 +181,21 @@ Visualizar a chave pública:
 type $env:USERPROFILE\.ssh\id_ed25519.pub
 ```
 
+Copiar o conteúdo exibido.
+
 ---
 
 # 7. Configurar SSH no GitHub
 
 No GitHub:
 
-Settings → SSH and GPG Keys → New SSH Key
+```text
+Settings
+→ SSH and GPG Keys
+→ New SSH Key
+```
 
-Colar o conteúdo da chave pública.
+Colar a chave pública.
 
 Testar:
 
@@ -113,12 +207,12 @@ Resultado esperado:
 
 ```text
 Hi usuario-github!
-You've successfully authenticated.
+You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
 ---
 
-# 8. Clonar o Repositório
+# 8. Clonar um Repositório
 
 Exemplo:
 
@@ -137,10 +231,11 @@ Abrir o Positron.
 Selecionar:
 
 ```text
-File → Open Folder
+File
+→ Open Folder
 ```
 
-Escolher a pasta do projeto.
+Selecionar a pasta do projeto.
 
 ---
 
@@ -159,25 +254,61 @@ Selecionar:
 Reopen in Container
 ```
 
-Na primeira execução o processo pode levar alguns minutos.
+ou
+
+```text
+Open Folder in Container
+```
+
+Na primeira execução poderão ser baixadas imagens Docker e instaladas dependências.
+
+Esse processo pode levar vários minutos.
+
+Nas execuções seguintes o tempo normalmente é muito menor.
 
 ---
 
 # 11. Testar o Ambiente
 
-No terminal do Positron:
+Abrir o terminal do Positron.
+
+Executar:
 
 ```bash
 R
 ```
 
-Executar:
+Depois:
 
 ```r
 library(data.table)
 library(duckdb)
 
 print("Ambiente OK")
+```
+
+Resultado esperado:
+
+```text
+[1] "Ambiente OK"
+```
+
+---
+
+# 12. Atualizar Repositórios
+
+Para atualizar um repositório:
+
+```powershell
+git pull
+```
+
+Para enviar alterações:
+
+```powershell
+git add .
+git commit -m "Descrição da alteração"
+git push
 ```
 
 ---
@@ -207,10 +338,13 @@ Não enviar ao GitHub:
 * PDFs;
 * Planilhas;
 * Quebras de sigilo;
+* Bases SIMBA;
+* Declarações fiscais;
 * Bancos DuckDB;
 * Dados pessoais;
 * Relatórios periciais;
-* Arquivos de procedimentos.
+* Arquivos de procedimentos;
+* Qualquer documento sensível.
 
 O GitHub deve ser utilizado apenas para compartilhamento de:
 
@@ -218,10 +352,27 @@ O GitHub deve ser utilizado apenas para compartilhamento de:
 * Modelos;
 * Automações;
 * Documentação técnica;
-* Boas práticas.
+* Boas práticas;
+* Estruturas reutilizáveis.
+
+---
+
+# Tecnologias Utilizadas
+
+* GitHub
+* Git
+* Docker Desktop
+* Positron
+* R
+* Python
+* DuckDB
+* Quarto
+* Inteligência Artificial
 
 ---
 
 # Suporte
 
 Em caso de dúvidas, entre em contato com os administradores da organização.
+
+Bem-vindo à comunidade Perícia Contábil-Financeira.
