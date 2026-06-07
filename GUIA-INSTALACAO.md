@@ -114,9 +114,9 @@ Linux Containers
 
 Após a instalação:
 
-* Reiniciar o computador;
-* Abrir o Docker Desktop;
-* Aguardar o Docker iniciar completamente.
+- Reiniciar o computador;
+- Abrir o Docker Desktop;
+- Aguardar o Docker iniciar completamente.
 
 Verificar:
 
@@ -140,7 +140,7 @@ https://positron.posit.co/
 
 Instalar normalmente.
 
-Na primeira execução, recomenda-se instalar a extensão:
+Na primeira execução recomenda-se instalar a extensão:
 
 ```text
 Dev Containers
@@ -226,16 +226,34 @@ git clone git@github.com:Pericia-Contabil-Financeira/patrimonial-financeiro.git
 
 # 9. Abrir o Projeto no Positron
 
-Abrir o Positron.
+Após clonar o repositório, localize a pasta do projeto no Windows Explorer.
 
-Selecionar:
+Exemplo:
+
+```text
+C:\Projetos\patrimonial-financeiro
+```
+
+Clique com o botão direito sobre a pasta e selecione:
+
+```text
+Open with Positron
+```
+
+ou
+
+```text
+Abrir com Positron
+```
+
+Caso essa opção não esteja disponível, abra o Positron e selecione:
 
 ```text
 File
 → Open Folder
 ```
 
-Selecionar a pasta do projeto.
+Em seguida escolha a pasta do projeto.
 
 ---
 
@@ -335,39 +353,39 @@ Projeto/
 
 Não enviar ao GitHub:
 
-* PDFs;
-* Planilhas;
-* Quebras de sigilo;
-* Bases SIMBA;
-* Declarações fiscais;
-* Bancos DuckDB;
-* Dados pessoais;
-* Relatórios periciais;
-* Arquivos de procedimentos;
-* Qualquer documento sensível.
+- PDFs;
+- Planilhas;
+- Quebras de sigilo;
+- Bases SIMBA;
+- Declarações fiscais;
+- Bancos DuckDB;
+- Dados pessoais;
+- Relatórios periciais;
+- Arquivos de procedimentos;
+- Qualquer documento sensível.
 
 O GitHub deve ser utilizado apenas para compartilhamento de:
 
-* Scripts;
-* Modelos;
-* Automações;
-* Documentação técnica;
-* Boas práticas;
-* Estruturas reutilizáveis.
+- Scripts;
+- Modelos;
+- Automações;
+- Documentação técnica;
+- Boas práticas;
+- Estruturas reutilizáveis.
 
 ---
 
 # Tecnologias Utilizadas
 
-* GitHub
-* Git
-* Docker Desktop
-* Positron
-* R
-* Python
-* DuckDB
-* Quarto
-* Inteligência Artificial
+- GitHub
+- Git
+- Docker Desktop
+- Positron
+- R
+- Python
+- DuckDB
+- Quarto
+- Inteligência Artificial
 
 ---
 
