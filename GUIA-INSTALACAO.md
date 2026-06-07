@@ -78,16 +78,10 @@ Selecionar a opção padrão:
 Checkout Windows-style, commit Unix-style line endings
 ```
 
-Após a instalação, abrir o PowerShell e verificar:
+Verificar no PowerShell:
 
 ```powershell
 git --version
-```
-
-Exemplo:
-
-```text
-git version 2.54.0.windows.1
 ```
 
 ---
@@ -122,12 +116,6 @@ Verificar:
 
 ```powershell
 docker --version
-```
-
-Exemplo:
-
-```text
-Docker version 28.x.x
 ```
 
 ---
@@ -214,12 +202,26 @@ You've successfully authenticated, but GitHub does not provide shell access.
 
 # 8. Clonar um Repositório
 
+Escolha uma pasta local para os projetos.
+
 Exemplo:
 
 ```powershell
 cd "C:\Projetos"
+```
 
+Clone o repositório desejado:
+
+```powershell
 git clone git@github.com:Pericia-Contabil-Financeira/patrimonial-financeiro.git
+```
+
+Outros exemplos:
+
+```powershell
+git clone git@github.com:Pericia-Contabil-Financeira/licitacoes.git
+git clone git@github.com:Pericia-Contabil-Financeira/exame-contabil.git
+git clone git@github.com:Pericia-Contabil-Financeira/mercado-capitais.git
 ```
 
 ---
@@ -282,7 +284,7 @@ Na primeira execução poderão ser baixadas imagens Docker e instaladas depend�
 
 Esse processo pode levar vários minutos.
 
-Nas execuções seguintes o tempo normalmente é muito menor.
+Nas execuções seguintes o tempo normalmente é menor.
 
 ---
 
@@ -290,7 +292,7 @@ Nas execuções seguintes o tempo normalmente é muito menor.
 
 Abrir o terminal do Positron.
 
-Executar:
+Testar R:
 
 ```bash
 R
@@ -302,26 +304,35 @@ Depois:
 library(data.table)
 library(duckdb)
 
-print("Ambiente OK")
+print("Ambiente R OK")
 ```
 
-Resultado esperado:
+Testar Python:
 
-```text
-[1] "Ambiente OK"
+```bash
+python
+```
+
+Depois:
+
+```python
+import pandas
+import pdfplumber
+
+print("Ambiente Python OK")
 ```
 
 ---
 
-# 12. Atualizar Repositórios
+# 12. Atualizar e Enviar Alterações
 
-Para atualizar um repositório:
+Para atualizar um repositório com as alterações do GitHub:
 
 ```powershell
 git pull
 ```
 
-Para enviar alterações:
+Para enviar alterações locais para o GitHub:
 
 ```powershell
 git add .
@@ -338,6 +349,7 @@ Os repositórios compartilham uma estrutura semelhante:
 ```text
 Projeto/
 ├── R/
+├── Python/
 ├── Documentos/
 ├── Dados/
 ├── Saidas/
@@ -346,6 +358,159 @@ Projeto/
 ├── README.md
 └── *.Rproj
 ```
+
+---
+
+# Organização dos Diretórios
+
+## R/
+
+Contém scripts desenvolvidos em linguagem R.
+
+Exemplos:
+
+- Importação de dados;
+- Limpeza de dados;
+- Análise financeira;
+- Relatórios;
+- Dashboards;
+- Integração com DuckDB;
+- Integração com Inteligência Artificial.
+
+Exemplo:
+
+```text
+R/
+├── importar_simba.R
+├── importar_dirpf.R
+├── evolucao_patrimonial.R
+└── gerar_relatorio.R
+```
+
+---
+
+## Python/
+
+Contém scripts desenvolvidos em linguagem Python.
+
+Exemplos:
+
+- OCR;
+- Extração de PDFs;
+- Processamento de documentos;
+- Integração com APIs;
+- Inteligência Artificial;
+- Processamento de imagens.
+
+Exemplo:
+
+```text
+Python/
+├── extrair_pdf.py
+├── ocr_documentos.py
+└── indexar_documentos.py
+```
+
+---
+
+## Documentos/
+
+Contém os documentos originais do caso.
+
+Exemplos:
+
+- PDFs;
+- Planilhas;
+- Quebras de sigilo;
+- Relatórios recebidos;
+- Extratos bancários;
+- Declarações fiscais.
+
+Esses arquivos permanecem apenas no computador do usuário.
+
+O GitHub **NÃO** realiza upload dessa pasta.
+
+---
+
+## Dados/
+
+Contém os dados estruturados produzidos a partir dos documentos.
+
+Exemplos:
+
+- Bancos DuckDB;
+- Arquivos Parquet;
+- Arquivos CSV;
+- Dados intermediários de processamento;
+- Bases extraídas dos documentos.
+
+Objetivo:
+
+Transformar documentos em dados passíveis de consulta, análise, cruzamento e eventual uso em RAG.
+
+O GitHub **NÃO** realiza upload dessa pasta.
+
+---
+
+## Saidas/
+
+Contém os resultados gerados pelos scripts.
+
+Exemplos:
+
+- Relatórios Word;
+- Relatórios PDF;
+- Relatórios HTML;
+- Relatórios em Markdown/Quarto;
+- Planilhas Excel;
+- Gráficos;
+- Dashboards exportados.
+
+O GitHub **NÃO** realiza upload dessa pasta.
+
+---
+
+## .devcontainer/
+
+Configura o ambiente Docker utilizado pelo Positron.
+
+Permite que diferentes usuários utilizem o mesmo ambiente de trabalho.
+
+---
+
+## Dockerfile
+
+Define os componentes instalados automaticamente no ambiente.
+
+Exemplos:
+
+- R;
+- Python;
+- DuckDB;
+- Bibliotecas;
+- Ferramentas auxiliares.
+
+---
+
+## README.md
+
+Documento principal do projeto.
+
+Deve conter:
+
+- Objetivo;
+- Estrutura;
+- Instruções de uso;
+- Dependências;
+- Exemplos.
+
+---
+
+## *.Rproj
+
+Arquivo de projeto utilizado pelo Positron/R.
+
+Facilita a organização dos scripts, diretórios e configurações do ambiente de trabalho.
 
 ---
 
