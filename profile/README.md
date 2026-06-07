@@ -25,8 +25,10 @@ Criar um espaço comum para desenvolvimento e compartilhamento de ferramentas de
 
 ## Documentação
 
-- Guia de Instalação: https://github.com/Pericia-Contabil-Financeira/.github/blob/main/GUIA-INSTALACAO.md
-- Governança: https://github.com/Pericia-Contabil-Financeira/.github/blob/main/GOVERNANCA.md
+- [Guia de Instalação](https://github.com/Pericia-Contabil-Financeira/.github/blob/main/GUIA-INSTALACAO.md)
+- [Governança](https://github.com/Pericia-Contabil-Financeira/.github/blob/main/GOVERNANCA.md)
+- [Como Contribuir](https://github.com/Pericia-Contabil-Financeira/.github/blob/main/CONTRIBUICAO.md)
+- [Perguntas Frequentes (FAQ)](https://github.com/Pericia-Contabil-Financeira/.github/blob/main/FAQ.md)
 
 ## Áreas
 
@@ -70,7 +72,12 @@ O GitHub deve ser utilizado apenas para scripts, modelos, documentação técnic
 
 ## Repositórios
 
+### Infraestrutura
+
 - `automacao-pericial`
+
+### Áreas Temáticas
+
 - `patrimonial-financeiro`
 - `licitacoes`
 - `exame-contabil`
@@ -80,6 +87,33 @@ O GitHub deve ser utilizado apenas para scripts, modelos, documentação técnic
 - `avaliacao-empresas-investimentos`
 - `gestao-fraudulenta-instituicoes-financeiras`
 
+## Tecnologias
+
+- R
+- Python
+- SQL
+- DuckDB
+- Docker
+- Git
+- GitHub
+- Quarto
+- Positron
+- Inteligência Artificial
+- Retrieval-Augmented Generation (RAG)
+
 ## Visão
 
 A proposta da organização é fomentar a colaboração entre peritos da Área 1, permitindo o compartilhamento de conhecimento, automações, modelos de análise e boas práticas, reduzindo retrabalho e acelerando o desenvolvimento de soluções aplicadas à perícia contábil-financeira.
+
+## Princípios
+
+- Reprodutibilidade;
+- Colaboração;
+- Transparência técnica;
+- Compartilhamento de conhecimento;
+- Segurança da informação;
+- Desenvolvimento contínuo.
+
+## Licença
+
+Salvo disposição em contrário indicada em cada repositório, os materiais disponibilizados destinam-se ao compartilhamento de conhecimento técnico e desenvolvimento colaborativo entre os participantes da organização.
