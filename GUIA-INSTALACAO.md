@@ -381,91 +381,7 @@ normalmente funcionarão sem solicitar senha novamente.
 
 ---
 
-# 9. Construir a Imagem Docker (Opcional)
-
-Entrar no diretório do projeto:
-
-```powershell
-cd patrimonial-financeiro
-```
-
-Construir a imagem:
-
-```powershell
-docker build -t patrimonial-financeiro .
-```
-
-## Importante
-
-Esta etapa normalmente pode ser dispensada.
-
-Se a política de execução do PowerShell já estiver configurada corretamente (não estiver como `Restricted`), o Positron normalmente construirá automaticamente a imagem Docker ao abrir o projeto em Dev Container.
-
-O fluxo mais simples costuma ser:
-
-```text
-git clone
-↓
-Abrir com Positron
-↓
-Reopen in Container
-↓
-Docker Build Automático
-```
-
-Portanto, o comando:
-
-```powershell
-docker build -t patrimonial-financeiro .
-```
-
-é recomendado apenas para:
-
-- validar previamente o Dockerfile;
-- diagnosticar problemas de build;
-- testar a imagem sem utilizar o Positron.
-
----
-
-# 10. Abrir o Projeto no Positron
-
-Localize o diretório do projeto.
-
-Exemplo:
-
-```text
-C:\ProjetosGit\patrimonial-financeiro
-```
-
-Clique com o botão direito sobre a pasta:
-
-```text
-Abrir com Positron
-```
-
-ou
-
-```text
-Open with Positron
-```
-
-Alternativamente:
-
-```text
-File
-→ Open Folder
-```
-
----
-
-# 11. Ajustar Política do PowerShell (Se Necessário)
-
-Caso o Positron apresente erro semelhante a:
-
-```text
-UnauthorizedAccess
-A execução de scripts foi desabilitada neste sistema
-```
+# 9. Ajustar Política do PowerShell (Se Necessário)
 
 Verificar:
 
@@ -505,11 +421,65 @@ Resultado esperado:
 RemoteSigned
 ```
 
-Fechar e abrir novamente o Positron.
+## Importante
+
+Se a política de execução já estiver configurada corretamente (não estiver como `Restricted`), nenhuma ação adicional é necessária.
+
+Essa configuração permite que o Positron execute os scripts temporários utilizados para criação automática dos Dev Containers.
+
+Após a correção da política de execução, prossiga diretamente para a abertura do projeto no Positron.
 
 ---
 
-# 12. Criar o Dev Container
+# 10. Abrir o Projeto no Positron
+
+Localize o diretório do projeto.
+
+Exemplo:
+
+```text
+C:\ProjetosGit\patrimonial-financeiro
+```
+
+Clique com o botão direito sobre a pasta:
+
+```text
+Abrir com Positron
+```
+
+ou
+
+```text
+Open with Positron
+```
+
+Alternativamente:
+
+```text
+File
+→ Open Folder
+```
+
+## Importante
+
+Se a política do PowerShell estiver configurada corretamente, o Positron normalmente detectará automaticamente:
+
+```text
+.devcontainer
+Dockerfile
+```
+
+e iniciará a construção da imagem Docker e do Dev Container sem necessidade de executar previamente:
+
+```powershell
+docker build
+```
+
+A primeira execução pode levar vários minutos devido ao download de imagens e instalação de dependências.
+
+---
+
+# 11. Criar o Dev Container
 
 Ao abrir o projeto, o Positron identificará automaticamente:
 
@@ -542,7 +512,7 @@ A primeira execução pode levar vários minutos.
 
 ---
 
-# 13. Configurar Git Dentro do Container
+# 12. Configurar Git Dentro do Container
 
 Após o Dev Container iniciar, abrir o terminal do Positron.
 
@@ -572,7 +542,7 @@ O Git instalado dentro do container Linux possui configuração própria e indep
 
 ---
 
-# 14. Testar o Ambiente
+# 13. Testar o Ambiente
 
 No console R:
 
@@ -614,15 +584,9 @@ Verificar versão do Python:
 python --version
 ```
 
-Verificar Docker:
-
-```bash
-docker --version
-```
-
 ---
 
-# 15. Atualizar e Enviar Alterações
+# 14. Atualizar e Enviar Alterações
 
 Atualizar o repositório:
 
@@ -658,7 +622,7 @@ Source Control
 
 ---
 
-# 16. Solução de Problemas
+# 15. Solução de Problemas
 
 ## Docker não inicia
 
@@ -773,148 +737,43 @@ Projeto/
 
 Contém scripts desenvolvidos em linguagem R.
 
-Exemplos:
-
-- Importação de dados;
-- Limpeza de dados;
-- Análise financeira;
-- Relatórios;
-- Dashboards;
-- Integração com DuckDB;
-- Integração com Inteligência Artificial.
-
-Exemplo:
-
-```text
-R/
-├── importar_simba.R
-├── importar_dirpf.R
-├── evolucao_patrimonial.R
-└── gerar_relatorio.R
-```
-
----
-
 ## Python/
 
 Contém scripts desenvolvidos em linguagem Python.
-
-Exemplos:
-
-- OCR;
-- Extração de PDFs;
-- Processamento de documentos;
-- Integração com APIs;
-- Inteligência Artificial;
-- Processamento de imagens.
-
-Exemplo:
-
-```text
-Python/
-├── extrair_pdf.py
-├── ocr_documentos.py
-└── indexar_documentos.py
-```
-
----
 
 ## Documentos/
 
 Contém os documentos originais do caso.
 
-Exemplos:
-
-- PDFs;
-- Planilhas;
-- Quebras de sigilo;
-- Relatórios recebidos;
-- Extratos bancários;
-- Declarações fiscais.
-
 O GitHub NÃO realiza upload dessa pasta.
-
----
 
 ## Dados/
 
 Contém os dados estruturados produzidos a partir dos documentos.
 
-Exemplos:
-
-- Bancos DuckDB;
-- Arquivos Parquet;
-- Arquivos CSV;
-- Dados intermediários.
-
-Objetivo:
-
-Transformar documentos em dados passíveis de consulta, análise, cruzamento e eventual uso em RAG.
-
 O GitHub NÃO realiza upload dessa pasta.
-
----
 
 ## Saidas/
 
 Contém os resultados gerados pelos scripts.
 
-Exemplos:
-
-- Relatórios Word;
-- Relatórios PDF;
-- Relatórios HTML;
-- Relatórios Quarto;
-- Planilhas Excel;
-- Gráficos;
-- Dashboards.
-
 O GitHub NÃO realiza upload dessa pasta.
-
----
 
 ## .devcontainer/
 
 Configura o ambiente Docker utilizado pelo Positron.
 
-Permite que diferentes usuários utilizem exatamente o mesmo ambiente de trabalho.
-
----
-
 ## Dockerfile
 
 Define os componentes instalados automaticamente no ambiente.
-
-Exemplos:
-
-- R;
-- Python;
-- DuckDB;
-- Quarto;
-- Bibliotecas;
-- Ferramentas auxiliares.
-
----
 
 ## README.md
 
 Documento principal do projeto.
 
-Deve conter:
-
-- Objetivo;
-- Estrutura;
-- Instruções de uso;
-- Dependências;
-- Exemplos.
-
----
-
 ## *.Rproj
 
 Arquivo de projeto utilizado pelo Positron.
-
-Facilita a organização dos scripts, diretórios e configurações do ambiente de trabalho.
 
 ---
 
