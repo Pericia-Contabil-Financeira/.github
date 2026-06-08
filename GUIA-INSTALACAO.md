@@ -2,11 +2,53 @@
 
 Este guia descreve os passos necessários para configurar o ambiente de desenvolvimento utilizado pela organização **Perícia Contábil-Financeira**.
 
-A infraestrutura foi projetada para fornecer um ambiente reproduzível e padronizado para desenvolvimento de automações, análise de dados e exploração documental utilizando R, Python, DuckDB, Quarto e Inteligência Artificial.
+A infraestrutura foi projetada para fornecer um ambiente reproduzível e padronizado para desenvolvimento de automações, análise de dados, exploração documental e Inteligência Artificial utilizando R, Python, DuckDB, Quarto e Docker.
 
 ---
 
-# 1. Criar Conta no GitHub
+# 1. Verificar o Computador
+
+Antes de iniciar a instalação, verifique:
+
+## Tipo de sistema
+
+Verifique se o computador utiliza:
+
+```text
+x64 (AMD64)
+```
+
+ou
+
+```text
+ARM64
+```
+
+## Versão do Windows
+
+Verifique se o sistema operacional é:
+
+```text
+Windows 10
+```
+
+ou
+
+```text
+Windows 11
+```
+
+Essas informações podem ser obtidas em:
+
+```text
+Configurações
+→ Sistema
+→ Sobre
+```
+
+---
+
+# 2. Criar Conta no GitHub
 
 Caso ainda não possua uma conta:
 
@@ -16,13 +58,28 @@ Após criar a conta, informe seu usuário GitHub ao administrador da organizaç�
 
 ---
 
-# 2. Instalar Git
+# 3. Instalar Git
 
 Download:
 
 https://git-scm.com/download/win
 
 ## Opções recomendadas durante a instalação
+
+### Componentes
+
+Selecionar:
+
+```text
+☑ Open Git Bash here
+☐ Open Git GUI here
+☑ Git LFS
+☑ Associate .git*
+☑ Associate .sh
+☐ Check daily for updates
+☑ Add Git Bash Profile to Windows Terminal
+☐ Scalar
+```
 
 ### Editor padrão
 
@@ -32,7 +89,7 @@ Selecionar:
 Use Notepad as Git's default editor
 ```
 
-### Nome padrão da branch principal
+### Branch principal
 
 Selecionar:
 
@@ -67,18 +124,53 @@ Use bundled OpenSSH
 Selecionar:
 
 ```text
-Use the OpenSSL library
+Use the native Windows Secure Channel library
 ```
 
 ### Line Endings
 
-Selecionar a opção padrão:
+Selecionar:
 
 ```text
 Checkout Windows-style, commit Unix-style line endings
 ```
 
-Verificar no PowerShell:
+### Terminal
+
+Selecionar:
+
+```text
+Use Windows' default console window
+```
+
+### Git Pull
+
+Selecionar:
+
+```text
+Fast-forward or merge
+```
+
+### Credential Helper
+
+Selecionar:
+
+```text
+Git Credential Manager
+```
+
+### Opções Extras
+
+Selecionar:
+
+```text
+☑ Enable file system caching
+☐ Enable symbolic links
+```
+
+## Verificar instalação
+
+Executar:
 
 ```powershell
 git --version
@@ -86,7 +178,7 @@ git --version
 
 ---
 
-# 3. Instalar Docker Desktop
+# 4. Instalar Docker Desktop
 
 Download:
 
@@ -94,49 +186,113 @@ https://www.docker.com/products/docker-desktop/
 
 ## Opções recomendadas
 
-Utilizar:
+Selecionar:
 
 ```text
-WSL2
+◉ All-users installation
 ```
 
 e
 
 ```text
-Linux Containers
+☑ Use WSL 2 instead of Hyper-V
+☐ Allow Windows Containers
 ```
 
-Após a instalação:
+Também selecionar:
 
-- Reiniciar o computador;
-- Abrir o Docker Desktop;
-- Aguardar o Docker iniciar completamente.
+```text
+☑ Add shortcut to desktop
+```
+
+## Após a instalação
+
+Abrir o Docker Desktop.
+
+Aguardar até aparecer:
+
+```text
+Docker is running
+```
 
 Verificar:
 
 ```powershell
-docker --version
+docker info
+```
+
+Resultado esperado:
+
+```text
+Server:
+...
+```
+
+Opcionalmente testar:
+
+```powershell
+docker run hello-world
 ```
 
 ---
 
-# 4. Instalar Positron
+# 5. Instalar Positron
 
 Download:
 
 https://positron.posit.co/
 
-Instalar normalmente.
+## Opções recomendadas
 
-Na primeira execução recomenda-se instalar a extensão:
+Selecionar:
 
 ```text
-Dev Containers
+☐ Criar um atalho na área de trabalho
+
+☑ Adicione a ação "Abrir com Positron" ao menu de contexto de arquivo
+☑ Adicione a ação "Abrir com Positron" ao menu de contexto de diretório
+☑ Registre Positron como um editor para tipos de arquivos suportados
+☑ Adicione em PATH
 ```
+
+Concluir a instalação.
 
 ---
 
-# 5. Configurar Git
+# 6. Habilitar Dev Containers no Positron
+
+Abrir o Positron.
+
+Acessar:
+
+```text
+Manage
+→ Settings
+```
+
+Pesquisar:
+
+```text
+dev container
+```
+
+Habilitar:
+
+```text
+Dev > Containers: Enable (Experimental)
+```
+
+Selecionar:
+
+```text
+☑ Dev > Containers: Enable (Experimental)
+```
+
+Fechar e reabrir o Positron.
+
+---
+
+# 7. Configurar Git
 
 Executar:
 
@@ -144,6 +300,18 @@ Executar:
 git config --global user.name "Seu Nome"
 git config --global user.email "seu_email@dominio"
 ```
+
+Exemplo:
+
+```powershell
+git config --global user.name "Claudio Riella"
+git config --global user.email "cgriella@gmail.com"
+```
+
+Observações:
+
+- O nome pode ser qualquer texto que identifique o autor dos commits.
+- Recomenda-se utilizar um e-mail cadastrado no GitHub.
 
 Verificar:
 
@@ -153,113 +321,138 @@ git config --global --list
 
 ---
 
-# 6. Criar Chave SSH
-
-Executar:
-
-```powershell
-ssh-keygen -t ed25519 -C "seu_email@dominio"
-```
-
-Pressionar ENTER para aceitar os valores padrão.
-
-Visualizar a chave pública:
-
-```powershell
-type $env:USERPROFILE\.ssh\id_ed25519.pub
-```
-
-Copiar o conteúdo exibido.
-
----
-
-# 7. Configurar SSH no GitHub
-
-No GitHub:
-
-```text
-Settings
-→ SSH and GPG Keys
-→ New SSH Key
-```
-
-Colar a chave pública.
-
-Testar:
-
-```powershell
-ssh -T git@github.com
-```
-
-Resultado esperado:
-
-```text
-Hi usuario-github!
-You've successfully authenticated, but GitHub does not provide shell access.
-```
-
----
-
 # 8. Clonar um Repositório
 
-Escolha uma pasta local para os projetos.
+Criar uma pasta para armazenar os repositórios.
 
 Exemplo:
 
 ```powershell
-cd "C:\Projetos"
+mkdir "C:\ProjetosGit"
+cd "C:\ProjetosGit"
 ```
 
-Clone o repositório desejado:
+Clonar o repositório:
 
 ```powershell
-git clone git@github.com:Pericia-Contabil-Financeira/patrimonial-financeiro.git
+git clone https://github.com/Pericia-Contabil-Financeira/patrimonial-financeiro.git
 ```
 
-Outros exemplos:
+Na primeira execução será solicitada autenticação.
 
-```powershell
-git clone git@github.com:Pericia-Contabil-Financeira/licitacoes.git
-git clone git@github.com:Pericia-Contabil-Financeira/exame-contabil.git
-git clone git@github.com:Pericia-Contabil-Financeira/mercado-capitais.git
+O Git Credential Manager abrirá automaticamente o navegador para autenticação no GitHub.
+
+Após a autenticação:
+
+```text
+git clone
+git pull
+git push
 ```
+
+normalmente funcionarão sem solicitar senha novamente.
 
 ---
 
-# 9. Abrir o Projeto no Positron
+# 9. Construir a Imagem Docker
 
-Após clonar o repositório, localize a pasta do projeto no Windows Explorer.
+Entrar no diretório do projeto:
+
+```powershell
+cd patrimonial-financeiro
+```
+
+Construir a imagem:
+
+```powershell
+docker build -t patrimonial-financeiro .
+```
+
+Esse processo pode levar vários minutos na primeira execução.
+
+---
+
+# 10. Abrir o Projeto no Positron
+
+Localize o diretório do projeto.
 
 Exemplo:
 
 ```text
-C:\Projetos\patrimonial-financeiro
+C:\ProjetosGit\patrimonial-financeiro
 ```
 
-Clique com o botão direito sobre a pasta e selecione:
-
-```text
-Open with Positron
-```
-
-ou
+Clique com o botão direito sobre a pasta:
 
 ```text
 Abrir com Positron
 ```
 
-Caso essa opção não esteja disponível, abra o Positron e selecione:
+ou
+
+```text
+Open with Positron
+```
+
+Alternativamente:
 
 ```text
 File
 → Open Folder
 ```
 
-Em seguida escolha a pasta do projeto.
+---
+
+# 11. Ajustar Política do PowerShell (Se Necessário)
+
+Caso o Positron apresente erro semelhante a:
+
+```text
+UnauthorizedAccess
+A execução de scripts foi desabilitada neste sistema
+```
+
+Verificar:
+
+```powershell
+Get-ExecutionPolicy
+```
+
+Se retornar:
+
+```text
+Restricted
+```
+
+executar:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+Confirmar:
+
+```text
+A
+```
+
+(Yes to All)
+
+Verificar novamente:
+
+```powershell
+Get-ExecutionPolicy
+```
+
+Resultado esperado:
+
+```text
+RemoteSigned
+```
 
 ---
 
-# 10. Criar o Dev Container
+# 12. Criar o Dev Container
 
 Ao abrir o projeto, o Positron identificará automaticamente:
 
@@ -268,83 +461,121 @@ Ao abrir o projeto, o Positron identificará automaticamente:
 Dockerfile
 ```
 
-Selecionar:
+e iniciará a construção do ambiente.
+
+Durante esse processo poderão ser criadas:
 
 ```text
-Reopen in Container
+Imagem Docker do Projeto
+Imagem Dev Container
+Container Docker
 ```
 
-ou
-
-```text
-Open Folder in Container
-```
-
-Na primeira execução poderão ser baixadas imagens Docker e instaladas dependências.
-
-Esse processo pode levar vários minutos.
-
-Nas execuções seguintes o tempo normalmente é menor.
+A primeira execução pode levar vários minutos.
 
 ---
 
-# 11. Testar o Ambiente
+# 13. Configurar Git Dentro do Container
 
-Abrir o terminal do Positron.
+Após o Dev Container iniciar, abrir o terminal do Positron.
 
-Testar R:
+Configurar:
 
 ```bash
-R
+git config --global user.name "Seu Nome"
+git config --global user.email "seu_email@dominio"
 ```
 
-Depois:
+Exemplo:
+
+```bash
+git config --global user.name "Claudio Riella"
+git config --global user.email "cgriella@gmail.com"
+```
+
+Verificar:
+
+```bash
+git config --global --list
+```
+
+---
+
+# 14. Testar o Ambiente
+
+No console R:
+
+```r
+sessionInfo()
+```
+
+Verificar:
+
+```text
+R version 4.x
+```
+
+Verificar diretório:
+
+```r
+getwd()
+```
+
+Resultado esperado:
+
+```text
+/workspaces/nome-do-projeto
+```
+
+Testar pacotes:
 
 ```r
 library(data.table)
 library(duckdb)
+library(arrow)
 
 print("Ambiente R OK")
 ```
 
-Testar Python:
-
-```bash
-python
-```
-
-Depois:
-
-```python
-import pandas
-import pdfplumber
-
-print("Ambiente Python OK")
-```
-
 ---
 
-# 12. Atualizar e Enviar Alterações
+# 15. Atualizar e Enviar Alterações
 
-Para atualizar um repositório com as alterações do GitHub:
+Atualizar o repositório:
 
-```powershell
+```bash
 git pull
 ```
 
-Para enviar alterações locais para o GitHub:
+Adicionar alterações:
 
-```powershell
+```bash
 git add .
+```
+
+Criar commit:
+
+```bash
 git commit -m "Descrição da alteração"
+```
+
+Enviar alterações:
+
+```bash
 git push
+```
+
+Também é possível utilizar a interface gráfica do Positron:
+
+```text
+Source Control
+→ Commit
+→ Push
 ```
 
 ---
 
 # Estrutura dos Repositórios
-
-Os repositórios compartilham uma estrutura semelhante:
 
 ```text
 Projeto/
@@ -353,6 +584,7 @@ Projeto/
 ├── Documentos/
 ├── Dados/
 ├── Saidas/
+├── Relatorios/
 ├── .devcontainer/
 ├── Dockerfile
 ├── README.md
@@ -426,9 +658,7 @@ Exemplos:
 - Extratos bancários;
 - Declarações fiscais.
 
-Esses arquivos permanecem apenas no computador do usuário.
-
-O GitHub **NÃO** realiza upload dessa pasta.
+O GitHub NÃO realiza upload dessa pasta.
 
 ---
 
@@ -441,14 +671,13 @@ Exemplos:
 - Bancos DuckDB;
 - Arquivos Parquet;
 - Arquivos CSV;
-- Dados intermediários de processamento;
-- Bases extraídas dos documentos.
+- Dados intermediários.
 
 Objetivo:
 
 Transformar documentos em dados passíveis de consulta, análise, cruzamento e eventual uso em RAG.
 
-O GitHub **NÃO** realiza upload dessa pasta.
+O GitHub NÃO realiza upload dessa pasta.
 
 ---
 
@@ -461,12 +690,12 @@ Exemplos:
 - Relatórios Word;
 - Relatórios PDF;
 - Relatórios HTML;
-- Relatórios em Markdown/Quarto;
+- Relatórios Quarto;
 - Planilhas Excel;
 - Gráficos;
-- Dashboards exportados.
+- Dashboards.
 
-O GitHub **NÃO** realiza upload dessa pasta.
+O GitHub NÃO realiza upload dessa pasta.
 
 ---
 
@@ -474,7 +703,7 @@ O GitHub **NÃO** realiza upload dessa pasta.
 
 Configura o ambiente Docker utilizado pelo Positron.
 
-Permite que diferentes usuários utilizem o mesmo ambiente de trabalho.
+Permite que diferentes usuários utilizem exatamente o mesmo ambiente de trabalho.
 
 ---
 
@@ -487,6 +716,7 @@ Exemplos:
 - R;
 - Python;
 - DuckDB;
+- Quarto;
 - Bibliotecas;
 - Ferramentas auxiliares.
 
@@ -508,7 +738,7 @@ Deve conter:
 
 ## *.Rproj
 
-Arquivo de projeto utilizado pelo Positron/R.
+Arquivo de projeto utilizado pelo Positron.
 
 Facilita a organização dos scripts, diretórios e configurações do ambiente de trabalho.
 
@@ -546,6 +776,7 @@ O GitHub deve ser utilizado apenas para compartilhamento de:
 - Git
 - Docker Desktop
 - Positron
+- Dev Containers
 - R
 - Python
 - DuckDB
