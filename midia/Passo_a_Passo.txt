@@ -1,0 +1,61 @@
+Antes de instalar verifique o "Tipo de sistema" (x64-AMD64 ou ARM64) e a especificação do windows (windows 10 ou 11) do seu computador
+
+Instalação do Git
+        ☑ Open Git Bash here
+        ☐ Open Git GUI here
+        ☑ Git LFS
+        ☑ Associate .git*
+        ☑ Associate .sh
+        ☐ Check daily for updates
+        ☑ Add Git Bash Profile to Windows Terminal
+        ☐ Scalar
+
+        Use Notepad as Git's default editor
+
+        ◉ Override the default branch name for new repositories: main
+
+        ◉ Git from the command line and also from 3rd-party software
+
+        ◉ Use bundled OpenSSH
+
+        ◉ Use the native Windows Secure Channel library
+
+        ◉ Checkout Windows-style, commit Unix-style line endings
+
+        ◉ Use Windows' default console window
+
+        ◉ Fast-forward or merge
+
+        ◉ Git Credential Manager
+
+        ☑ Enable file system caching
+        ☐ Enable symbolic links
+
+Instalação do Docker
+        ◉ All-users installation
+           ☑ Use WSL 2 instead of Hyper-V
+           ☐ Allow Windows Containers
+        ☑ Add shortcut to desktop
+
+        Abra o Docker Desktop: espere alguns minutos até aparecer algo como Docker is running
+
+Instalação do Positron
+        ☐ Criar um atalho na área de trabalho
+        ☑ Adicione a ação "Abrir com Positron" ao menu de contexto de arquivo
+        ☑ Adicione a ação "Abrir com Positron" ao menu de contexto de diretório
+        ☑ Registre Positron como um editor para tipos de arquivos suportados
+        ☑ Adicione em PATH
+
+        Inicie o Positron e habilite uso de containers em Manage : Settings e digite dev container e
+                Dev > Containers: Enable (Experimental)
+                ☑ Dev > Containers: Enable (Experimental)
+
+Configuração Git e imagem Docker
+        git config --global user.name "Claudio Riella" (um nome sugestivo para os commits)
+        git config --global user.email "cgriella@gmail.com" (o ideal é usar um e-mail cadastrado no GitHub)
+        Criar uma pasta para os repositórios e depois mudar para a pasta. Exemplo: cd "C:\PCF Riella\Desktop\ProjetosGit"
+        git clone https://github.com/Pericia-Contabil-Financeira/patrimonial-financeiro.git (ele pedira para autenticar pelo broswer), depois disto git clone, git pull e git push funcionam sem pedir senha novamente
+        docker build -t patrimonial-financeiro .
+
+Abrir com Positron o repositório baixado (botão direito do mouse sobre o diretorio e "Abrir com Positron")
+Se houver a msg de erro UnauthorizedAccess verifique a politica de segurança do PowerShell digitando o comando Get-ExecutionPolicy, se retornar Restricted abilite com o comando Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
