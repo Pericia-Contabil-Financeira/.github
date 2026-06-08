@@ -46,6 +46,12 @@ Configurações
 → Sobre
 ```
 
+ou pressionando:
+
+```text
+Windows + Pause
+```
+
 ---
 
 # 2. Criar Conta no GitHub
@@ -228,10 +234,24 @@ Server:
 ...
 ```
 
-Opcionalmente testar:
+### Verificações adicionais (opcional)
+
+Verificar o WSL:
 
 ```powershell
-docker run hello-world
+wsl --status
+```
+
+Listar distribuições:
+
+```powershell
+wsl -l -v
+```
+
+Resultado esperado:
+
+```text
+docker-desktop
 ```
 
 ---
@@ -332,6 +352,13 @@ mkdir "C:\ProjetosGit"
 cd "C:\ProjetosGit"
 ```
 
+ou
+
+```powershell
+mkdir "C:\PCF Riella\Desktop\ProjetosGit"
+cd "C:\PCF Riella\Desktop\ProjetosGit"
+```
+
 Clonar o repositório:
 
 ```powershell
@@ -354,7 +381,7 @@ normalmente funcionarão sem solicitar senha novamente.
 
 ---
 
-# 9. Construir a Imagem Docker
+# 9. Construir a Imagem Docker (Opcional)
 
 Entrar no diretório do projeto:
 
@@ -368,7 +395,35 @@ Construir a imagem:
 docker build -t patrimonial-financeiro .
 ```
 
-Esse processo pode levar vários minutos na primeira execução.
+## Importante
+
+Esta etapa normalmente pode ser dispensada.
+
+Se a política de execução do PowerShell já estiver configurada corretamente (não estiver como `Restricted`), o Positron normalmente construirá automaticamente a imagem Docker ao abrir o projeto em Dev Container.
+
+O fluxo mais simples costuma ser:
+
+```text
+git clone
+↓
+Abrir com Positron
+↓
+Reopen in Container
+↓
+Docker Build Automático
+```
+
+Portanto, o comando:
+
+```powershell
+docker build -t patrimonial-financeiro .
+```
+
+é recomendado apenas para:
+
+- validar previamente o Dockerfile;
+- diagnosticar problemas de build;
+- testar a imagem sem utilizar o Positron.
 
 ---
 
@@ -450,6 +505,8 @@ Resultado esperado:
 RemoteSigned
 ```
 
+Fechar e abrir novamente o Positron.
+
 ---
 
 # 12. Criar o Dev Container
@@ -461,7 +518,17 @@ Ao abrir o projeto, o Positron identificará automaticamente:
 Dockerfile
 ```
 
-e iniciará a construção do ambiente.
+Selecionar:
+
+```text
+Reopen in Container
+```
+
+ou
+
+```text
+Open Folder in Container
+```
 
 Durante esse processo poderão ser criadas:
 
@@ -498,6 +565,10 @@ Verificar:
 ```bash
 git config --global --list
 ```
+
+Observação:
+
+O Git instalado dentro do container Linux possui configuração própria e independente do Git instalado no Windows.
 
 ---
 
@@ -537,6 +608,18 @@ library(arrow)
 print("Ambiente R OK")
 ```
 
+Verificar versão do Python:
+
+```bash
+python --version
+```
+
+Verificar Docker:
+
+```bash
+docker --version
+```
+
 ---
 
 # 15. Atualizar e Enviar Alterações
@@ -571,6 +654,97 @@ Também é possível utilizar a interface gráfica do Positron:
 Source Control
 → Commit
 → Push
+```
+
+---
+
+# 16. Solução de Problemas
+
+## Docker não inicia
+
+Verificar:
+
+```powershell
+docker info
+```
+
+Se não houver seção:
+
+```text
+Server:
+```
+
+o Docker Desktop provavelmente ainda não terminou de iniciar.
+
+---
+
+## Git não reconhece o usuário
+
+Executar:
+
+```bash
+git config --global user.name "Seu Nome"
+git config --global user.email "seu_email@dominio"
+```
+
+Verificar:
+
+```bash
+git config --global --list
+```
+
+---
+
+## Positron não abre o Dev Container
+
+Verificar:
+
+```powershell
+Get-ExecutionPolicy
+```
+
+Se retornar:
+
+```text
+Restricted
+```
+
+executar:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+---
+
+## Verificar containers ativos
+
+```powershell
+docker ps
+```
+
+---
+
+## Verificar todos os containers
+
+```powershell
+docker ps -a
+```
+
+---
+
+## Verificar imagens instaladas
+
+```powershell
+docker images
+```
+
+---
+
+## Verificar o status do WSL
+
+```powershell
+wsl --status
 ```
 
 ---
