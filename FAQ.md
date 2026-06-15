@@ -82,6 +82,344 @@ Não. No Windows o Docker Desktop é praticamente obrigatório, porque o Windows
 
 ---
 
+## Princípios Arquiteturais
+
+### Quais são os princípios arquiteturais da organização?
+
+A organização adota três princípios arquiteturais fundamentais:
+
+1. Reprodutibilidade
+2. Portabilidade
+3. Escalabilidade Operacional
+
+Esses princípios orientam as decisões relacionadas a Docker, Rocker, Git, DuckDB, Quarto, Positron e demais ferramentas utilizadas nos projetos.
+
+---
+
+# Reprodutibilidade
+
+### O que significa reprodutibilidade em ciência de dados?
+
+Reprodutibilidade é a capacidade de executar novamente uma análise e obter os mesmos resultados utilizando os mesmos dados, código e ambiente computacional.
+
+Ela é um dos pilares da ciência de dados moderna, permitindo verificar resultados, corrigir erros e compartilhar conhecimento de forma confiável.
+
+---
+
+### O que significa reprodutibilidade em perícia?
+
+Na atividade pericial, reprodutibilidade significa que outro perito deve ser capaz de reproduzir os procedimentos técnicos realizados utilizando os mesmos insumos, dados e metodologia.
+
+Isso aumenta a transparência, a auditabilidade e a confiabilidade das conclusões produzidas.
+
+---
+
+### Como Docker, Git, Quarto e DuckDB contribuem para a reprodutibilidade?
+
+**Git**
+- Controla versões do código;
+- Permite rastrear alterações;
+- Preserva histórico e autoria.
+
+**Docker/Rocker**
+- Padroniza o ambiente computacional;
+- Garante versões consistentes de ferramentas e bibliotecas;
+- Evita diferenças entre computadores.
+
+**DuckDB**
+- Facilita a distribuição e reprodução de bases analíticas;
+- Elimina dependências de servidores de banco de dados.
+
+**Quarto**
+- Integra código, texto e resultados em um único documento;
+- Permite regenerar relatórios de forma automática.
+
+---
+
+### Quais riscos permanecem?
+
+Mesmo com uma arquitetura reproduzível, ainda existem riscos:
+
+- Dados de entrada incompletos;
+- Dados de entrada incorretos;
+- OCR com falhas de reconhecimento;
+- Dependência de serviços externos;
+- Mudanças em APIs;
+- Erros de modelagem;
+- Erros de interpretação;
+- Bugs em bibliotecas;
+- Falhas humanas na execução dos procedimentos;
+- Uso inadequado de ferramentas de IA.
+
+A reprodutibilidade reduz riscos operacionais, mas não elimina a necessidade de validação técnica.
+
+---
+
+# Portabilidade
+
+### O que significa portabilidade em software?
+
+Portabilidade é a capacidade de executar um sistema em diferentes ambientes sem necessidade de adaptações significativas.
+
+O objetivo é reduzir a dependência de um computador, sistema operacional ou infraestrutura específica.
+
+---
+
+### Qual o papel dos containers?
+
+Os containers encapsulam o ambiente da aplicação.
+
+Em vez de depender das configurações do computador, o projeto passa a depender do ambiente definido pelo container.
+
+Isso permite mover o projeto entre:
+
+- Windows;
+- Linux;
+- Servidores;
+- Máquinas mais potentes;
+- Infraestruturas em nuvem.
+
+---
+
+### Como minimizar dependências do sistema operacional?
+
+Algumas boas práticas incluem:
+
+- Utilizar Docker/Rocker;
+- Utilizar caminhos relativos;
+- Evitar caminhos absolutos específicos do Windows;
+- Evitar dependências exclusivas de Windows ou Linux;
+- Armazenar configurações no repositório;
+- Automatizar instalações e configurações;
+- Evitar instalações manuais fora do Docker.
+
+Exemplo de caminho pouco portátil:
+
+```text
+C:\Users\Usuario\Documentos\Projeto
+```
+
+Exemplo mais portátil:
+
+```text
+Dados/
+Documentos/
+Saidas/
+```
+
+---
+
+### Como estruturar diretórios, dados e configurações para maximizar a portabilidade?
+
+Uma estrutura recomendada é:
+
+```text
+Projeto/
+├── Dados/
+├── Documentos/
+├── R/
+├── Relatorios/
+├── Saidas/
+├── Dockerfile
+├── README.qmd
+├── FAQ.md
+└── .devcontainer/
+```
+
+Essa organização facilita a movimentação do projeto entre diferentes ambientes.
+
+---
+
+# Escalabilidade Operacional
+
+### O que significa escalabilidade operacional?
+
+Escalabilidade operacional é a capacidade de adaptar o ambiente de execução ao porte e à complexidade do caso pericial.
+
+O objetivo é preservar a mesma arquitetura enquanto aumenta a capacidade operacional disponível.
+
+---
+
+### Como ela difere da escalabilidade de software?
+
+A escalabilidade de software normalmente trata de atender:
+
+- Mais usuários;
+- Mais requisições;
+- Mais acessos simultâneos.
+
+Já a escalabilidade operacional trata de:
+
+- Processar mais documentos;
+- Processar bases maiores;
+- Executar OCR em larga escala;
+- Utilizar hardware mais potente;
+- Migrar para ambientes mais adequados.
+
+Tudo isso sem reescrever a solução.
+
+---
+
+### Quais componentes do projeto escalam naturalmente?
+
+Os seguintes componentes tendem a escalar bem:
+
+- Git;
+- Docker;
+- Rocker;
+- DuckDB;
+- Quarto;
+- Scripts R bem estruturados.
+
+Esses componentes podem ser executados em diferentes máquinas e ambientes mantendo a mesma lógica operacional.
+
+---
+
+### Quais são os gargalos mais prováveis?
+
+Os gargalos mais comuns em projetos periciais costumam ser:
+
+1. Leitura e escrita em disco;
+2. OCR;
+3. Processamento de PDFs;
+4. Memória RAM;
+5. CPU;
+6. Rede (quando houver serviços remotos).
+
+Na maioria dos casos, o gargalo surge antes no armazenamento e na memória do que no processador.
+
+---
+
+### Como medir quando uma migração de ambiente se torna justificável?
+
+Alguns indicadores importantes:
+
+- Uso constante de memória acima de 80%;
+- Uso frequente de swap;
+- OCR demorando horas ou dias;
+- Lentidão excessiva na leitura de milhares de arquivos;
+- DuckDB consumindo praticamente toda a memória disponível;
+- Sistema tornando-se pouco responsivo durante o processamento;
+- Tempos de execução incompatíveis com a necessidade operacional.
+
+Nesses casos pode ser vantajoso:
+
+- Utilizar Linux em dual boot;
+- Utilizar uma máquina mais potente;
+- Utilizar um servidor Linux;
+- Utilizar infraestrutura em nuvem.
+
+---
+
+### Como esses conceitos se relacionam?
+
+Os três princípios estão conectados:
+
+```text
+Reprodutibilidade
+        ↓
+Portabilidade
+        ↓
+Escalabilidade Operacional
+```
+
+Sem reprodutibilidade não existe portabilidade.
+
+Sem portabilidade a escalabilidade operacional torna-se difícil e custosa.
+
+Assim, a organização busca construir soluções que possam crescer sem depender de uma máquina, sistema operacional ou infraestrutura específica.
+
+Em outras palavras:
+
+```text
+Reprodutibilidade
+        +
+Portabilidade
+        =
+Base para Escalabilidade Operacional
+```
+
+---
+
+### Por que utilizar Docker e Rocker?
+
+O Docker e o Rocker não aumentam diretamente a capacidade de processamento da máquina.
+
+O principal benefício é permitir que o mesmo projeto seja executado em diferentes ambientes preservando o mesmo comportamento.
+
+Por exemplo:
+
+```text
+Windows
+   ↓
+Docker/Rocker
+   ↓
+Projeto
+```
+
+pode ser migrado para:
+
+```text
+Linux
+   ↓
+Docker/Rocker
+   ↓
+Projeto
+```
+
+ou para:
+
+```text
+Servidor Linux
+   ↓
+Docker/Rocker
+   ↓
+Projeto
+```
+
+sem necessidade de reconstruir todo o ambiente.
+
+O Docker e o Rocker funcionam como mecanismos de reprodutibilidade e portabilidade, permitindo que a escalabilidade operacional seja alcançada quando necessário.
+
+---
+
+### Vale a pena utilizar Linux em dual boot?
+
+Pode ser uma estratégia interessante para casos periciais de grande porte.
+
+Em determinadas situações, o Windows pode começar a competir por recursos com:
+
+- Docker Desktop;
+- WSL2;
+- Antivírus;
+- OneDrive;
+- Navegador;
+- Sistemas corporativos;
+- Outros processos em segundo plano.
+
+Nesses casos, iniciar a mesma máquina em Linux pode proporcionar:
+
+- Melhor uso de memória;
+- Maior estabilidade;
+- Melhor responsividade;
+- Melhor desempenho de leitura e escrita de arquivos;
+- Menor overhead operacional.
+
+O ganho não costuma ser dramático em CPU, mas pode ser relevante em tarefas como:
+
+- OCR;
+- Processamento massivo de PDFs;
+- DuckDB;
+- Geração de relatórios;
+- Indexação documental;
+- Manipulação de grandes volumes de arquivos.
+
+Como o ambiente está encapsulado no container Rocker, a migração de Windows para Linux pode ocorrer utilizando o mesmo repositório Git e praticamente o mesmo Dockerfile, sem necessidade de reengenharia.
+
+Essa possibilidade existe porque a arquitetura foi concebida com base em reprodutibilidade e portabilidade, permitindo que o ambiente de execução seja adaptado ao porte do caso pericial.
+
+---
+
 ## Vale a pena usar Linux (dual boot) para casos grandes?
 
 Pode valer como estratégia de escalabilidade operacional. Em casos periciais de grande porte, o ambiente Windows pode começar a "engasgar" pela concorrência de recursos (Docker Desktop, WSL2, antivírus, OneDrive, Teams, navegador, sistemas corporativos).
