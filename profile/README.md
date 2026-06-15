@@ -54,6 +54,63 @@ Os repositórios utilizam uma estrutura comum baseada em:
 - Git / GitHub
 - Inteligência Artificial
 
+## Princípios Arquiteturais
+
+A infraestrutura da organização é orientada por três princípios centrais, que justificam o uso de Docker/Rocker, Git, DuckDB, Quarto e scripts versionados:
+
+### Reprodutibilidade
+
+Capacidade de executar o projeto em momentos, máquinas e ambientes diferentes obtendo o mesmo comportamento técnico esperado. Em vez de depender de instalações manuais em cada computador, o ambiente é descrito e versionado (Docker/Rocker, Git, DuckDB, Quarto). Isso reduz erros, incompatibilidades de versão e tempo de preparação do ambiente.
+
+### Portabilidade
+
+Capacidade de mover o projeto entre diferentes ambientes de execução sem reengenharia. O mesmo repositório e o mesmo Dockerfile podem ser executados em Windows com Docker Desktop, em Linux nativo com Docker Engine, em servidor Linux ou em nuvem (por exemplo, Azure). O container Rocker passa a ser o "computador" da aplicação, e o sistema operacional hospedeiro torna-se apenas o anfitrião.
+
+### Escalabilidade Operacional
+
+Capacidade de adaptar o ambiente de execução ao tamanho e à complexidade do caso pericial sem alterar a arquitetura. Escalar não significa apenas adquirir hardware mais potente: também envolve escolher o ambiente operacional mais eficiente para cada situação (por exemplo, iniciar a mesma máquina em Linux nativo via dual boot quando o ambiente Windows se tornar um gargalo).
+
+Os três princípios se encadeiam: sem reprodutibilidade, cada ambiente exigiria configuração própria; sem portabilidade, o projeto ficaria preso a uma máquina ou sistema operacional. Assim, **reprodutibilidade + portabilidade = base para escalabilidade operacional**.
+
+### Pilhas de execução
+
+O mesmo projeto (container Rocker) pode ser executado em diferentes hospedeiros. A portabilidade vem de manter o container constante e variar apenas o anfitrião:
+
+```mermaid
+flowchart TB
+    GIT["Repositório Git<br/>mesmo Dockerfile"] --> WIN
+    GIT --> LIN
+    GIT --> SRV
+
+    subgraph WIN["Windows (padrão)"]
+        direction TB
+        W1["Windows (host)"] --> W2["Docker Desktop"]
+        W2 --> W3["WSL2 (Linux)"]
+        W3 --> W4["Docker Engine"]
+        W4 --> W5["Container Rocker<br/>R · DuckDB · Quarto"]
+        W5 --> W6["Projeto"]
+    end
+
+    subgraph LIN["Linux nativo (dual boot)"]
+        direction TB
+        L1["Linux (host)"] --> L2["Docker Engine"]
+        L2 --> L3["Container Rocker<br/>R · DuckDB · Quarto"]
+        L3 --> L4["Projeto"]
+    end
+
+    subgraph SRV["Servidor / Nuvem (remoto)"]
+        direction TB
+        S0["Positron (Remote SSH, local)"] -.-> S1["Servidor Linux"]
+        S1 --> S2["Docker Engine"]
+        S2 --> S3["Container Rocker<br/>R · DuckDB · Quarto"]
+        S3 --> S4["Projeto"]
+    end
+```
+
+- **Windows** envolve três ambientes (Windows, WSL2 e o container) — uso padrão da organização.
+- **Linux nativo** elimina o Docker Desktop e o WSL2, restando duas camadas (host e container).
+- **Servidor/nuvem** mantém a interface (Positron) local via Remote SSH, enquanto arquivos e sessões rodam no host remoto.
+
 ## Segurança
 
 Não devem ser enviados ao GitHub:
@@ -108,6 +165,8 @@ A proposta da organização é fomentar a colaboração entre peritos da Área 1
 ## Princípios
 
 - Reprodutibilidade;
+- Portabilidade;
+- Escalabilidade operacional;
 - Colaboração;
 - Transparência técnica;
 - Compartilhamento de conhecimento;

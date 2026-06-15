@@ -52,6 +52,28 @@ Procure incluir:
 - Exemplo de uso;
 - Comentários relevantes.
 
+## Princípios Arquiteturais
+
+As contribuições devem respeitar os três princípios que orientam a infraestrutura da organização: **reprodutibilidade**, **portabilidade** e **escalabilidade operacional** (descritos em GOVERNANCA.md). Na prática, isso significa escrever código que rode da mesma forma em diferentes máquinas e sistemas operacionais.
+
+### Escreva código portátil
+
+Para que o mesmo projeto rode em Windows, Linux ou servidor sem ajustes:
+
+- Use **caminhos relativos** (`Dados/`, `Documentos/`, `Saidas/`) em vez de caminhos absolutos do Windows (`C:/Users/...`);
+- Evite separadores de caminho fixos; prefira funções como `file.path()` (R) ou `os.path.join` / `pathlib` (Python);
+- Não dependa de programas instalados apenas no host; declare as dependências no Dockerfile/ambiente;
+- Atenção a codificação (prefira UTF-8) e a diferenças de fim de linha entre sistemas.
+
+### Prefira formatos de dados neutros
+
+Para preservar portabilidade e reprodutibilidade, prefira formatos abertos e multiplataforma:
+
+- DuckDB;
+- Parquet;
+- CSV;
+- XLSX (quando necessário).
+
 ## Organização dos Repositórios
 
 Cada repositório representa uma área temática.
@@ -71,6 +93,7 @@ Antes de criar novos diretórios ou estruturas, procure seguir o padrão já exi
 - Utilize Git para versionamento;
 - Faça alterações pequenas e frequentes;
 - Mantenha os scripts reproduzíveis;
+- Escreva código portátil (caminhos relativos, formatos neutros);
 - Evite dependências desnecessárias;
 - Priorize simplicidade e clareza.
 
