@@ -46,42 +46,6 @@ Além da reprodutibilidade, o Docker oferece **portabilidade** (mover o projeto 
 
 ---
 
-## O que é o Rocker?
-
-Rocker é um conjunto de imagens Docker baseadas em Linux já preparadas com R, pacotes e ferramentas científicas (por exemplo, `rocker/verse`, que inclui R, Quarto e o tidyverse).
-
-O Rocker **não é um sistema operacional** e não pode receber boot diretamente. Ele é executado por cima do Docker, que por sua vez precisa de um sistema operacional hospedeiro (Windows ou Linux).
-
-Uma analogia útil: Linux é o prédio, Docker é o condomínio e Rocker é o apartamento.
-
----
-
-## Quantas camadas existem entre o hardware e o meu código?
-
-Depende do sistema operacional hospedeiro.
-
-No **Windows**, o Docker Desktop usa uma camada Linux (WSL2) para executar containers Linux:
-
-```text
-Windows → WSL2 (Linux) → Docker Engine → Container Rocker → Projeto
-```
-
-No **Linux nativo**, o Docker Engine usa diretamente o kernel Linux do host, eliminando o WSL2 e o Docker Desktop:
-
-```text
-Linux → Docker Engine → Container Rocker → Projeto
-```
-
-Em outras palavras, no Windows há três ambientes envolvidos (Windows, WSL2 e o container); no Linux nativo há apenas dois (Linux host e o container). O custo da camada do container Rocker é pequeno, porque ela compartilha o kernel do host.
-
----
-
-## Preciso do Docker Desktop no Linux?
-
-Não. No Windows o Docker Desktop é praticamente obrigatório, porque o Windows não executa containers Linux diretamente. No Linux basta instalar o Docker Engine (`docker` + `docker compose`), sem Docker Desktop e sem WSL2.
-
----
-
 ## Princípios Arquiteturais
 
 ### Quais são os princípios arquiteturais da organização?
@@ -98,41 +62,75 @@ Esses princípios orientam as decisões relacionadas a Docker, Rocker, Git, Duck
 
 # Reprodutibilidade
 
-### O que significa reprodutibilidade em ciência de dados?
+### O que significa reprodutibilidade?
 
-Reprodutibilidade é a capacidade de executar novamente uma análise e obter os mesmos resultados utilizando os mesmos dados, código e ambiente computacional.
+O conceito de reprodutibilidade pode ser entendido sob duas perspectivas complementares: a reprodutibilidade computacional e a reprodutibilidade científica ou metodológica.
 
-Ela é um dos pilares da ciência de dados moderna, permitindo verificar resultados, corrigir erros e compartilhar conhecimento de forma confiável.
+#### Reprodutibilidade Computacional
+
+É a capacidade de executar novamente o projeto em momentos, máquinas e ambientes diferentes obtendo o mesmo comportamento técnico esperado.
+
+No contexto desta organização, a reprodutibilidade computacional é alcançada principalmente por meio de:
+
+- Git;
+- Docker;
+- Rocker;
+- DuckDB;
+- Quarto;
+- Controle de versões do código e das configurações.
+
+O objetivo é garantir que o ambiente de execução possa ser reconstruído de forma consistente, independentemente do computador, sistema operacional ou infraestrutura utilizada.
+
+Essa forma de reprodutibilidade é fundamental para a portabilidade e para a escalabilidade operacional da solução.
 
 ---
 
-### O que significa reprodutibilidade em perícia?
+#### Reprodutibilidade Científica e Metodológica
 
-Na atividade pericial, reprodutibilidade significa que outro perito deve ser capaz de reproduzir os procedimentos técnicos realizados utilizando os mesmos insumos, dados e metodologia.
+É a capacidade de terceiros reproduzirem os procedimentos analíticos realizados e verificarem se os resultados obtidos são consistentes, robustos e confiáveis.
 
-Isso aumenta a transparência, a auditabilidade e a confiabilidade das conclusões produzidas.
+Na ciência de dados, isso significa que outros pesquisadores ou analistas devem ser capazes de reproduzir uma análise utilizando os mesmos dados, código e metodologia, chegando a conclusões compatíveis.
+
+Na atividade pericial, significa que outro profissional deve conseguir compreender, executar e validar os mesmos procedimentos técnicos utilizando os mesmos dados e metodologia, aumentando a transparência, a auditabilidade e a confiabilidade das conclusões produzidas.
+
+A reprodutibilidade metodológica está diretamente relacionada à qualidade do processo analítico e à capacidade de auditoria dos resultados.
+
+Diferentemente da repetitividade, que mede a consistência de medições realizadas pela mesma pessoa utilizando o mesmo equipamento em curto intervalo de tempo, a reprodutibilidade avalia a concordância entre diferentes operadores, equipes ou sistemas.
+
+Assim, a reprodutibilidade não se limita à execução do código ou do ambiente computacional; ela também envolve a capacidade de explicar, documentar, validar e auditar o caminho metodológico que levou aos resultados obtidos.
 
 ---
 
 ### Como Docker, Git, Quarto e DuckDB contribuem para a reprodutibilidade?
 
+Cada ferramenta contribui de forma diferente.
+
 **Git**
-- Controla versões do código;
+- Preserva histórico e autoria;
 - Permite rastrear alterações;
-- Preserva histórico e autoria.
+- Facilita auditorias e revisões.
 
 **Docker/Rocker**
 - Padroniza o ambiente computacional;
-- Garante versões consistentes de ferramentas e bibliotecas;
-- Evita diferenças entre computadores.
+- Elimina diferenças entre computadores;
+- Permite reconstruir o ambiente de execução.
 
 **DuckDB**
-- Facilita a distribuição e reprodução de bases analíticas;
-- Elimina dependências de servidores de banco de dados.
+- Facilita a distribuição de bases analíticas;
+- Reduz dependências de infraestrutura externa;
+- Favorece a preservação do contexto analítico.
 
 **Quarto**
 - Integra código, texto e resultados em um único documento;
-- Permite regenerar relatórios de forma automática.
+- Documenta explicitamente o caminho metodológico adotado;
+- Permite regenerar relatórios automaticamente;
+- Facilita auditorias e revisões;
+- Suporta múltiplos formatos de saída (HTML, PDF, Word, entre outros);
+- Simplifica a produção de documentos técnicos complexos;
+- Favorece ambientes colaborativos;
+- Permite utilização de múltiplas linguagens (R, Python, SQL e outras).
+
+Assim, o Quarto contribui simultaneamente para a reprodutibilidade computacional e para a reprodutibilidade metodológica.
 
 ---
 
@@ -143,15 +141,15 @@ Mesmo com uma arquitetura reproduzível, ainda existem riscos:
 - Dados de entrada incompletos;
 - Dados de entrada incorretos;
 - OCR com falhas de reconhecimento;
-- Dependência de serviços externos;
-- Mudanças em APIs;
 - Erros de modelagem;
 - Erros de interpretação;
+- Dependência de serviços externos;
+- Mudanças em APIs;
 - Bugs em bibliotecas;
 - Falhas humanas na execução dos procedimentos;
 - Uso inadequado de ferramentas de IA.
 
-A reprodutibilidade reduz riscos operacionais, mas não elimina a necessidade de validação técnica.
+A reprodutibilidade reduz riscos operacionais e aumenta a transparência do processo, mas não elimina a necessidade de validação técnica dos resultados.
 
 ---
 
@@ -321,6 +319,8 @@ Reprodutibilidade
 Portabilidade
         ↓
 Escalabilidade Operacional
+        ↓
+Longevidade da Solução
 ```
 
 Sem reprodutibilidade não existe portabilidade.
@@ -417,6 +417,42 @@ O ganho não costuma ser dramático em CPU, mas pode ser relevante em tarefas co
 Como o ambiente está encapsulado no container Rocker, a migração de Windows para Linux pode ocorrer utilizando o mesmo repositório Git e praticamente o mesmo Dockerfile, sem necessidade de reengenharia.
 
 Essa possibilidade existe porque a arquitetura foi concebida com base em reprodutibilidade e portabilidade, permitindo que o ambiente de execução seja adaptado ao porte do caso pericial.
+
+---
+
+## O que é o Rocker?
+
+Rocker é um conjunto de imagens Docker baseadas em Linux já preparadas com R, pacotes e ferramentas científicas (por exemplo, `rocker/verse`, que inclui R, Quarto e o tidyverse).
+
+O Rocker **não é um sistema operacional** e não pode receber boot diretamente. Ele é executado por cima do Docker, que por sua vez precisa de um sistema operacional hospedeiro (Windows ou Linux).
+
+Uma analogia útil: Linux é o prédio, Docker é o condomínio e Rocker é o apartamento.
+
+---
+
+## Quantas camadas existem entre o hardware e o meu código?
+
+Depende do sistema operacional hospedeiro.
+
+No **Windows**, o Docker Desktop usa uma camada Linux (WSL2) para executar containers Linux:
+
+```text
+Windows → WSL2 (Linux) → Docker Engine → Container Rocker → Projeto
+```
+
+No **Linux nativo**, o Docker Engine usa diretamente o kernel Linux do host, eliminando o WSL2 e o Docker Desktop:
+
+```text
+Linux → Docker Engine → Container Rocker → Projeto
+```
+
+Em outras palavras, no Windows há três ambientes envolvidos (Windows, WSL2 e o container); no Linux nativo há apenas dois (Linux host e o container). O custo da camada do container Rocker é pequeno, porque ela compartilha o kernel do host.
+
+---
+
+## Preciso do Docker Desktop no Linux?
+
+Não. No Windows o Docker Desktop é praticamente obrigatório, porque o Windows não executa containers Linux diretamente. No Linux basta instalar o Docker Engine (`docker` + `docker compose`), sem Docker Desktop e sem WSL2.
 
 ---
 
