@@ -1022,6 +1022,107 @@ Enquanto não houver essas evidências, o dual boot deve ser tratado como **plan
 
 ---
 
+
+# Apêndice – Arquitetura, Desempenho e Localização dos Dados
+
+## Princípio fundamental
+
+Docker **não** é uma ferramenta de desempenho.
+
+O container Rocker é adotado neste projeto exclusivamente por três razões:
+
+- **Reprodutibilidade:** o mesmo R, as mesmas bibliotecas, o mesmo comportamento em qualquer máquina, sem depender de instalações manuais.
+- **Portabilidade:** o mesmo repositório Git e o mesmo Dockerfile funcionam no Windows, no Linux nativo e em servidores remotos, sem reengenharia.
+- **Escalabilidade operacional:** novos peritos configuram o ambiente em minutos; atualizações de dependências são versionadas e propagadas via Git.
+
+O desempenho — velocidade de OCR, ingestão de PDFs, consultas DuckDB, processamento de grandes volumes — **não é determinado pelo container**, mas por três fatores independentes:
+
+1. **Arquitetura adotada** (Windows, WSL2 ou Linux nativo)
+2. **Recursos de hardware** (CPU, RAM, tipo de disco)
+3. **Localização dos dados** (se os arquivos cruzam ou não a fronteira Windows↔Linux)
+
+---
+
+## Regra prática: localização dos dados
+
+A decisão mais importante para evitar lentidão é manter o projeto no sistema de arquivos nativo do IDE:
+
+```text
+Se o IDE é Linux  → manter o projeto em  /home/usuario/ProjetosGit/
+Se o IDE é Windows → manter o projeto em  C:\ProjetosGit\
+```
+
+Quando o projeto cruza a fronteira entre Windows e Linux — por exemplo, acessando `C:\` a partir do WSL2 (via `/mnt/c/`) ou acessando `\\wsl.localhost\Ubuntu\home\...` a partir do Windows — há uma camada de tradução de protocolo (9P) que pode tornar operações de I/O de 5 a 10 vezes mais lentas.
+
+Para cargas de trabalho com muitos arquivos (OCR em lote, hashing, varredura de documentos), esse custo é relevante e acumulativo.
+
+---
+
+## Quando cada arquitetura é recomendada
+
+### Casos pequenos — uso padrão da organização
+
+Para a maioria dos casos, a pilha padrão da organização é suficiente:
+
+```text
+Windows
+ └─ Positron Windows
+ └─ Docker Desktop
+      └─ Container Rocker
+           └─ Projeto em C:\ProjetosGit\
+```
+
+Vantagens: configuração mais simples, interface nativa do Windows, suporte institucional direto. O cruzamento de fronteiras de filesystem não chega a ser perceptível para volumes pequenos de dados.
+
+---
+
+### Casos de grande porte — alternativa sem Docker Desktop
+
+Em casos com muitos PDFs, OCR massivo ou tabelas DuckDB muito grandes, a alternativa dentro do próprio Windows é usar o WSL2 com Docker Engine e manter o projeto no filesystem Linux:
+
+```text
+Windows
+ └─ WSL2 (Ubuntu)
+      ├─ Positron Linux (via WSLg)
+      ├─ Docker Engine
+      └─ Container Rocker
+           └─ Projeto em /home/usuario/ProjetosGit/
+```
+
+Nessa configuração, o projeto vive inteiramente no sistema de arquivos Linux (ext4), eliminando o custo de tradução. O Docker Engine dentro do WSL2 não requer Docker Desktop nem licenciamento adicional. O Positron Linux é acessado via WSLg (suporte nativo a GUI do Windows 11).
+
+> **Atenção:** o Positron Windows em sessão Remote-WSL **não suporta Dev Containers** — é uma limitação documentada. Para usar Dev Containers nessa arquitetura, o Positron Linux deve rodar diretamente dentro do WSL2, não como sessão remota do Positron Windows.
+
+---
+
+### Casos de grande porte — máximo desempenho (Linux nativo)
+
+Iniciar a mesma máquina em Linux nativo via dual boot elimina o WSL2 e o Docker Desktop, restando apenas duas camadas (host Linux e container):
+
+```text
+Linux
+ └─ Positron Linux
+ └─ Docker Engine
+      └─ Container Rocker
+           └─ Projeto em /home/usuario/ProjetosGit/
+```
+
+Essa é a configuração de menor overhead e maior aproveitamento de hardware. O apêndice de dual boot descreve como configurar e validar o ambiente antes de adotá-lo definitivamente.
+
+---
+
+## Resumo
+
+| Situação | Arquitetura recomendada | Projeto em |
+|---|---|---|
+| Uso padrão / casos pequenos | Windows + Docker Desktop | `C:\ProjetosGit\` |
+| Grande volume, sem Docker Desktop | WSL2 + Docker Engine + Positron Linux | `/home/usuario/ProjetosGit/` |
+| Grande volume, máximo desempenho | Linux nativo + Docker Engine | `/home/usuario/ProjetosGit/` |
+
+A migração entre arquiteturas não exige reengenharia: o mesmo repositório Git e o mesmo Dockerfile funcionam nas três. Basta clonar o repositório no local correto e subir o container.
+
+---
+
 # Suporte
 
 Em caso de dúvidas, entre em contato com os administradores da organização.
