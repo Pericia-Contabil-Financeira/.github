@@ -1129,12 +1129,26 @@ Essa é a configuração de menor overhead e maior aproveitamento de hardware. O
 
 ## Resumo
 
+### Porte dos casos
+
+Use os critérios abaixo para escolher a arquitetura. Os limiares são **orientativos** — o sinal mais confiável na prática é lentidão perceptível ou travamentos durante o pipeline.
+
+| Porte | Documentos | Volume em disco | Tempo estimado de pipeline |
+|---|---|---|---|
+| **Pequeno** | até ~500 | até ~200 MB | < 30 min |
+| **Médio** | ~500–5.000 | ~200 MB–2 GB | 30 min – 2 h |
+| **Grande** | > 5.000 ou > 2 GB | > 2 GB | > 2 h |
+
+> **Referência empírica:** o caso SLS (49 arquivos físicos, 728 MB, 3.485 documentos, pipeline completo em ~1 h) enquadra-se como caso **médio**. Os limiares serão refinados à medida que os benchmarks do apêndice forem coletados.
+
+### Arquitetura recomendada
+
 | Situação | Arquitetura recomendada | Projeto em |
 |---|---|---|
-| Uso padrão / casos pequenos | Windows + Docker Desktop | `C:\ProjetosGit\` |
-| Grande volume, IDE via browser | WSL2 + Docker Engine + RStudio Server | `/home/usuario/ProjetosGit/` |
-| Grande volume, sem Docker Desktop | WSL2 + Docker Engine + Positron Linux (WSLg, Win 11) | `/home/usuario/ProjetosGit/` |
-| Grande volume, máximo desempenho | Linux nativo + Docker Engine | `/home/usuario/ProjetosGit/` |
+| Casos pequenos (uso padrão) | Windows + Docker Desktop | `C:\ProjetosGit\` |
+| Casos médios ou grandes, IDE via browser | WSL2 + Docker Engine + RStudio Server | `/home/usuario/ProjetosGit/` |
+| Casos médios ou grandes, sem Docker Desktop | WSL2 + Docker Engine + Positron Linux (WSLg, Win 11) | `/home/usuario/ProjetosGit/` |
+| Casos grandes, máximo desempenho | Linux nativo + Docker Engine | `/home/usuario/ProjetosGit/` |
 
 A migração entre arquiteturas não exige reengenharia: o mesmo repositório Git e o mesmo Dockerfile funcionam nas três. Basta clonar o repositório no local correto e subir o container.
 
