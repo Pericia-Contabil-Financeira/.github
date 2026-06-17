@@ -108,6 +108,8 @@ ou
 Windows 11
 ```
 
+> **Nota:** a arquitetura WSL2 + Positron Linux (para casos de grande porte) requer **Windows 11**, pois depende do WSLg para executar aplicações GUI dentro do WSL2. No Windows 10, a alternativa disponível é o RStudio Server via browser (ver apêndice).
+
 Essas informações podem ser obtidas em:
 
 ```text
@@ -1022,7 +1024,6 @@ Enquanto não houver essas evidências, o dual boot deve ser tratado como **plan
 
 ---
 
-
 # Apêndice – Arquitetura, Desempenho e Localização dos Dados
 
 ## Princípio fundamental
@@ -1093,6 +1094,21 @@ Nessa configuração, o projeto vive inteiramente no sistema de arquivos Linux (
 
 > **Atenção:** o Positron Windows em sessão Remote-WSL **não suporta Dev Containers** — é uma limitação documentada. Para usar Dev Containers nessa arquitetura, o Positron Linux deve rodar diretamente dentro do WSL2, não como sessão remota do Positron Windows.
 
+> **Nota — RStudio Server como alternativa ao Positron Linux no WSL2**
+>
+> O container Rocker/verse já inclui o **RStudio Server**, acessível pelo browser em `http://localhost:8787`. Para casos de grande porte, isso representa uma alternativa mais simples à instalação do Positron Linux via WSLg: basta rodar o Docker Engine dentro do WSL2 com o projeto no filesystem Linux (`/home/usuario/ProjetosGit/`) e acessar o RStudio Server pelo browser — sem necessidade de instalar uma nova distribuição Linux nem configurar o Positron no WSL2.
+>
+> Vale registrar a distinção entre as modalidades de IDE:
+>
+> | Modalidade | Interface gráfica | Acesso |
+> |---|---|---|
+> | Positron Desktop | Necessária | Aplicação nativa |
+> | RStudio Desktop | Necessária | Aplicação nativa |
+> | RStudio Server | Não necessária | Browser (`localhost:8787`) — **gratuito** |
+> | Positron Server | Não necessária | Browser — gratuito apenas para uso acadêmico (JupyterHub) ou via Posit Workbench (pago) |
+>
+> Para o contexto desta organização, **somente o RStudio Server está disponível gratuitamente** para acesso via browser hoje. O desempenho de processamento (OCR, DuckDB, ingestão de PDFs) é equivalente entre RStudio Server e RStudio Desktop, pois o motor R roda no mesmo container — o que muda é apenas a interface de edição. Vale reforçar que **o ganho de I/O vem da localização do projeto no filesystem Linux** (`/home/usuario/ProjetosGit/`), não do IDE escolhido. O RStudio Server substitui a complexidade de instalar o Positron Linux via WSLg, mas o projeto ainda precisa estar no filesystem Linux para que o benefício de desempenho se concretize.
+
 ---
 
 ### Casos de grande porte — máximo desempenho (Linux nativo)
@@ -1116,7 +1132,8 @@ Essa é a configuração de menor overhead e maior aproveitamento de hardware. O
 | Situação | Arquitetura recomendada | Projeto em |
 |---|---|---|
 | Uso padrão / casos pequenos | Windows + Docker Desktop | `C:\ProjetosGit\` |
-| Grande volume, sem Docker Desktop | WSL2 + Docker Engine + Positron Linux | `/home/usuario/ProjetosGit/` |
+| Grande volume, IDE via browser | WSL2 + Docker Engine + RStudio Server | `/home/usuario/ProjetosGit/` |
+| Grande volume, sem Docker Desktop | WSL2 + Docker Engine + Positron Linux (WSLg, Win 11) | `/home/usuario/ProjetosGit/` |
 | Grande volume, máximo desempenho | Linux nativo + Docker Engine | `/home/usuario/ProjetosGit/` |
 
 A migração entre arquiteturas não exige reengenharia: o mesmo repositório Git e o mesmo Dockerfile funcionam nas três. Basta clonar o repositório no local correto e subir o container.
